@@ -19,4 +19,4 @@
 - PostgresSQL for dev and H2 for deployment env.
 
 ## High-Level Architecture
-![img.png](img.png)
+![alt text](image.png)
