@@ -5,12 +5,16 @@ import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
-@AllArgsConstructor
-@NoArgsConstructor
 public class SubmitQuizResponse {
     private int score;
     private int total;
     private Map<Long, String> correctAnswers;
+
+    public SubmitQuizResponse(int score, int totalQuestions, Map<Long, String> correctAnswers) {
+        this.score = score;
+        this.total = totalQuestions;
+        this.correctAnswers = correctAnswers;
+    }
 
     public int getScore() {
         return score;

@@ -5,7 +5,7 @@ import java.util.List;
 public class CreateQuizRequest {
 
     private String title;
-    private List<CreateQuizRequest> questions;
+    private List<QuestionRequest> questions;
 
     public String getTitle() {
         return title;
@@ -15,11 +15,11 @@ public class CreateQuizRequest {
         this.title = title;
     }
 
-    public List<CreateQuizRequest> getQuestions() {
+    public List<QuestionRequest> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<CreateQuizRequest> questions) {
+    public void setQuestions(List<QuestionRequest> questions) {
         this.questions = questions;
     }
 }
