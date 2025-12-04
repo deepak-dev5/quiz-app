@@ -33,7 +33,8 @@ const TakeQuiz = () => {
 
   const data = await res.json();
 
-  setScore(prev => prev+data.score);
+  const quizScore = Number(data.score) || 0;
+  setScore(prev => prev + quizScore);
 
   if(currentIndex+1<quizzes.length){
     setCurrentIndex(currentIndex+1);

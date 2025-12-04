@@ -2,6 +2,7 @@ package com.assessment.quiz_service.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,17 +12,15 @@ public class Question {
     private Long id;
 
     private String text;
-
     private String type;
-
     private String correctAnswer;
 
     @ManyToOne
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Options> options;
+    @ElementCollection
+    private List<Options> options = new ArrayList<>();
 
     public Long getId() {
         return id;

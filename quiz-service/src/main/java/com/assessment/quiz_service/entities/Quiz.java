@@ -2,6 +2,7 @@ package com.assessment.quiz_service.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,8 +14,9 @@ public class Quiz {
 
     private String title;
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Question> questions;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "quiz_id")
+    private List<Question> questions = new ArrayList<>();
 
     public Long getId() {
         return id;

@@ -8,12 +8,12 @@ import java.util.Map;
 public class SubmitQuizResponse {
     private int score;
     private int total;
-    private Map<Long, String> correctAnswers;
+    private String message;
 
-    public SubmitQuizResponse(int score, int totalQuestions, Map<Long, String> correctAnswers) {
+    public SubmitQuizResponse(int score, int totalQuestions, String message) {
         this.score = score;
         this.total = totalQuestions;
-        this.correctAnswers = correctAnswers;
+        this.message = message;
     }
 
     public int getScore() {
@@ -32,11 +32,11 @@ public class SubmitQuizResponse {
         this.total = total;
     }
 
-    public Map<Long, String> getCorrectAnswers() {
-        return correctAnswers;
+    public String getMessage() {
+        return message;
     }
 
-    public void setCorrectAnswers(Map<Long, String> correctAnswers) {
-        this.correctAnswers = correctAnswers;
+    public void setMessage() {
+        this.message = message;
     }
 }

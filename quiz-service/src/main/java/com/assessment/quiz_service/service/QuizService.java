@@ -61,20 +61,23 @@ public class QuizService {
         Quiz quiz = quizRepository.findById(quizId)
                 .orElseThrow(()-> new RuntimeException("Quiz not found with id: " + quizId));
 
+        Map<Long, String> answers = request.getAnswers();
+        if(answers==null){
+            answers = new HashMap<>();
+        }
         int score=0;
         int totalQuestions = quiz.getQuestions().size();
-        Map<Long, String> correctAnswers = new HashMap<>();
 
         for(Question q: quiz.getQuestions()){
-            String correct = q.getCorrectAnswer();
-            String submitted = request.getAnswers().get(q.getId());
-            correctAnswers.put(q.getId(), correct);
-
-            if(submitted!=null && submitted.equalsIgnoreCase(correct)){
+            String userAnswer = answers.get(q.getId());
+            if(userAnswer == null){
+                userAnswer = "";
+            }
+            if(q.getCorrectAnswer()!=null && q.getCorrectAnswer().equalsIgnoreCase(userAnswer)){
                 score++;
             }
         }
-        return new SubmitQuizResponse(score, totalQuestions, correctAnswers);
+        return new SubmitQuizResponse(score, totalQuestions, "Scores calculated successfully");
     }
 
     private QuizResponse toQuizResponse(Quiz quiz){
