@@ -1,6 +1,7 @@
 package com.assessment.quiz_service.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Options {
@@ -9,6 +10,8 @@ public class Options {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @NotNull(message = "Option cannot be null")
     private String text;
 
     @ManyToOne

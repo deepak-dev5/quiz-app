@@ -1,19 +1,16 @@
 package com.assessment.quiz_service.models;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
-import java.util.Map;
+import java.util.List;
 
 public class SubmitQuizResponse {
     private int score;
     private int total;
-    private String message;
+    private List<QuestionResponse> questionsWithCorrectAnswers;
 
-    public SubmitQuizResponse(int score, int totalQuestions, String message) {
+    public SubmitQuizResponse(int score, int totalQuestions, List<QuestionResponse> questionsWithCorrectAnswers) {
         this.score = score;
         this.total = totalQuestions;
-        this.message = message;
+        this.questionsWithCorrectAnswers = questionsWithCorrectAnswers;
     }
 
     public int getScore() {
@@ -32,11 +29,13 @@ public class SubmitQuizResponse {
         this.total = total;
     }
 
-    public String getMessage() {
-        return message;
+    public List<QuestionResponse> getQuestionsWithCorrectAnswers() {
+        return questionsWithCorrectAnswers;
     }
 
-    public void setMessage() {
-        this.message = message;
+    public void setQuestionsWithCorrectAnswers(List<QuestionResponse> questionsWithCorrectAnswers) {
+        this.questionsWithCorrectAnswers = questionsWithCorrectAnswers;
     }
+
+
 }

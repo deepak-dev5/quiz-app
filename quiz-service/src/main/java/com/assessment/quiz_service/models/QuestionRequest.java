@@ -1,43 +1,32 @@
 package com.assessment.quiz_service.models;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class QuestionRequest {
 
+    @NotNull(message = "Question text cannot be null")
     private String text;
+
+    @NotNull(message = "Question type cannot be null")
     private String type;
+
+    @NotNull(message = "Options cannot be null")
     private List<String> options;
-    private String CorrectAnswer;
 
-    public String getText() {
-        return text;
-    }
+    @NotNull(message = "Correct answer cannot be null")
+    private String correctAnswer;
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public List<String> getOptions() {
-        return options;
-    }
-
-    public void setOptions(List<String> options) {
-        this.options = options;
-    }
-
-    public String getCorrectAnswer() {
-        return CorrectAnswer;
-    }
-
-    public void setCorrectAnswer(String correctAnswer) {
-        CorrectAnswer = correctAnswer;
+    @Override
+    public String toString() {
+        return "QuestionRequest{" +
+                "text='" + text + '\'' +
+                ", type='" + type + '\'' +
+                ", options=" + options +
+                ", correctAnswer='" + correctAnswer + '\'' +
+                '}';
     }
 }

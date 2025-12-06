@@ -1,6 +1,5 @@
 package com.assessment.quiz_service.service;
 
-import ch.qos.logback.core.util.StringUtil;
 import com.assessment.quiz_service.entities.Options;
 import com.assessment.quiz_service.entities.Question;
 import com.assessment.quiz_service.entities.Quiz;
@@ -8,10 +7,7 @@ import com.assessment.quiz_service.models.*;
 import com.assessment.quiz_service.repositories.QuizRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,6 +53,11 @@ public class QuizService {
         return quizzes.stream().map(this::toQuizResponse).collect(Collectors.toList());
     }
 
+    public List<QuizResponse> getQuizById(Long id){
+        List<Quiz> quizzes = quizRepository.findAllById(Collections.singleton(id));
+        return quizzes.stream().map(this::toQuizResponse).collect(Collectors.toList());
+    }
+
     public SubmitQuizResponse submitQuiz(Long quizId, SubmitQuizRequest request){
         Quiz quiz = quizRepository.findById(quizId)
                 .orElseThrow(()-> new RuntimeException("Quiz not found with id: " + quizId));
@@ -68,16 +69,34 @@ public class QuizService {
         int score=0;
         int totalQuestions = quiz.getQuestions().size();
 
-        for(Question q: quiz.getQuestions()){
+        List<QuestionResponse> questionsWithCorrectAnswers = new ArrayList<>();
+
+        for(Question q : quiz.getQuestions()){
             String userAnswer = answers.get(q.getId());
             if(userAnswer == null){
                 userAnswer = "";
             }
-            if(q.getCorrectAnswer()!=null && q.getCorrectAnswer().equalsIgnoreCase(userAnswer)){
+
+            if(q.getCorrectAnswer() != null && q.getCorrectAnswer().equalsIgnoreCase(userAnswer)){
                 score++;
             }
+
+            QuestionResponse questionResponse = new QuestionResponse();
+            questionResponse.setId(q.getId());
+            questionResponse.setText(q.getText());
+            questionResponse.setType(q.getType());
+
+            if("MCQ".equalsIgnoreCase(q.getType()) && q.getOptions() != null){
+                questionResponse.setOptions(q.getOptions().stream()
+                        .map(Options::getText)
+                        .collect(Collectors.toList()));
+            }
+            questionResponse.setCorrectAnswer(q.getCorrectAnswer());
+
+            questionsWithCorrectAnswers.add(questionResponse);
         }
-        return new SubmitQuizResponse(score, totalQuestions, "Scores calculated successfully");
+
+        return new SubmitQuizResponse(score, totalQuestions, questionsWithCorrectAnswers);
     }
 
     private QuizResponse toQuizResponse(Quiz quiz){
@@ -90,6 +109,7 @@ public class QuizService {
                     qr.setId(q.getId());
                     qr.setText(q.getText());
                     qr.setType(q.getType());
+                    qr.setCorrectAnswer(q.getCorrectAnswer());
 
                     if("MCQ".equalsIgnoreCase(q.getType()) && q.getOptions() != null){
                         qr.setOptions(q.getOptions().stream()

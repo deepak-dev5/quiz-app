@@ -1,10 +1,15 @@
 package com.assessment.quiz_service.models;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 public class CreateQuizRequest {
 
+    @NotNull(message = "Title cannot be null")
     private String title;
+
+    @NotNull(message = "Questions cannot be null")
     private List<QuestionRequest> questions;
 
     public String getTitle() {

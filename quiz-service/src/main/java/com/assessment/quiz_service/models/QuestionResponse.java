@@ -7,6 +7,7 @@ public class QuestionResponse {
     private String text;
     private String type;
     private List<String> options;
+    private String correctAnswer;
 
     public Long getId() {
         return id;
@@ -38,5 +39,13 @@ public class QuestionResponse {
 
     public void setOptions(List<String> options) {
         this.options = options;
+    }
+
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 }

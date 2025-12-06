@@ -1,6 +1,7 @@
 package com.assessment.quiz_service.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ public class Quiz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Title cannot be null")
     private String title;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
