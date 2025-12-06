@@ -9,22 +9,20 @@ const TakeQuiz = () => {
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [timer, setTimer] = useState(20);
 
-  // TODO: implement timer
-  // setTimeout(() => {
-  //   console.log("in timeout")
-  //   if(timer>=0){
-  //     setTimer(timer => timer-1)
-  //   }
-  //   // else{
-  //   //   setTimer(0);
-  //   // }
-  // }, 1000);
+    useEffect(() => {
+    if (timer > 0) {
+      const intervalId = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
 
-  //TODO: Random id genration for Quiz id
-  const id = 10;
+      return () => clearInterval(intervalId);
+    } else {
+      handleFinalSubmit();
+    }
+  }, [timer]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/v1/quizzes/${id}`)
+    fetch('http://localhost:8080/api/v1/quizzes')
       .then((res) => res.json())
       .then((data) => setQuizzes(data));
   }, []);
@@ -93,7 +91,7 @@ const TakeQuiz = () => {
 
   return (
     <div>
-      <div><p>Time left:: </p>{timer}</div>
+      <div><p>Time left:: {timer}s</p></div>
       {!showScore ? (
         <div>
           <h2>{currentQuiz.title}</h2>
