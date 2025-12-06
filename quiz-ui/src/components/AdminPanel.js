@@ -2,14 +2,18 @@ import React, { useState } from 'react'
 
 const AdminPanel = () => {
   const [title, setTitle] = useState('');
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState([]); 
   const [qText, setQText] = useState('');
   const [qType, setQType] = useState('MCQ');
   const [options, setOptions] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
 
   const addQuestion = () => {
-    const opts = options.split(',').map(o => o.trim);
+    if (!qText || !correctAnswer || (qType === 'MCQ' && !options)) {
+    alert("Please fill in all fields");
+    return;
+  }
+    const opts = options.split(',').map(o => o.trim());
     setQuestions([...questions, {
       text:qText,
       type:qType,
@@ -23,18 +27,31 @@ const AdminPanel = () => {
   };
 
   const submitQuiz = async () => {
+    if (!title || questions.length === 0) {
+    alert("Please provide a quiz title and add at least one question.");
+    return;
+  }
+  console.log("Submitting quiz...");
+  console.log("Title:", title);
+  console.log("Questions:", questions);
+  
     const payload = {title, questions};
-    const res = await fetch ('http://localhost:8080/api/v1/quizzes',{
+    try {
+      const res = await fetch ('http://localhost:8080/api/v1/quizzes',{
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(payload)
-    });
-    if(res.ok){
-      alert('Quiz Created successfully');
-      setTitle('');
-      setQuestions([]);
-    }else{
-      alert('Error creating quiz');
+      });
+      if(res.ok){
+        alert('Quiz Created successfully');
+        setTitle('');
+        setQuestions([]);
+      }else{
+        const errorData = await res.json();
+        alert(`Error creating quiz: ${errorData.message}`);
+      }
+    } catch (error) {
+      alert('Network Error. Try again later.')
     }
   };
 
@@ -72,10 +89,21 @@ const AdminPanel = () => {
 
           <h3>Questions Preview</h3>
           <ul>
-            {questions.map((q, idx) => (
-              <li key={idx}>{q.text} ({q.type})</li>
-            ))}
+          {questions.map((q, idx) => (
+            <li key={idx}>
+              {q.text} ({q.type}) 
+              {q.type === 'MCQ' && (
+                <ul>
+                {q.options.map((opt, idx) => (
+                <li key={idx}>{opt}</li>
+                ))}
+              </ul>
+              )}
+            </li>
+           ))}
           </ul>
+
+
     </div>
   );
 
